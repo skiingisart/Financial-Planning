@@ -77,7 +77,13 @@ def forecast(retire_age, withdraw_401k_age, social_security_age, annual_need,
             income_401k_values.append(withdrawal - tax)
         balance_401k_values.append(balance_401k)
 
-    df["401k Income"] = [0]*(withdraw_401k_age - ages[0]) + income_401k_values
+    income_401k_full = []
+    for age in df.index:
+        if age < withdraw_401k_age:
+            income_401k_full.append(0)
+        else:
+            income_401k_full.append(income_401k_values.pop(0))
+    df["401k Income"] = income_401k_full
     df["401k Balance"] = balance_401k_values
     df["Social Security"] = np.where(df.index >= social_security_age, social_security_income, 0)
     df["Total Income"] = df[["Spouse Income", "Dividend Income", "401k Income", "Social Security"]].sum(axis=1)
