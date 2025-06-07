@@ -135,10 +135,10 @@ df_b = forecast(retire_age_b, withdraw_401k_age_b, social_security_age_b, annual
                 return_401k_b, roth_pct_b, tax_401k_b)
 
 st.subheader("💵 Total Income Comparison")
-st.line_chart(pd.DataFrame({ "Scenario A": df_a["Total Income"], "Scenario B": df_b["Total Income"] }))
+st.line_chart(pd.DataFrame({ "Scenario A": df_a["Total Income"], "Scenario B": df_b["Total Income"] }).applymap(lambda x: round(x)))
 
 st.subheader("📈 401(k) Balance Comparison")
-st.line_chart(pd.DataFrame({ "Scenario A": df_a["401k Balance"], "Scenario B": df_b["401k Balance"] }))
+st.line_chart(pd.DataFrame({ "Scenario A": df_a["401k Balance"], "Scenario B": df_b["401k Balance"] }).applymap(lambda x: round(x)))
 
 def convert_df_to_excel(dfa, dfb):
     import io
@@ -155,7 +155,7 @@ st.download_button("📥 Download Forecasts (Excel)", data=excel_data, file_name
 col1, col2 = st.columns(2)
 with col1:
     st.markdown("### 📊 Scenario A")
-    st.dataframe(df_a.style.format("{:.0f}"))
+    st.dataframe(df_a.style.format("${:,.0f}"))
 with col2:
     st.markdown("### 📊 Scenario B")
-    st.dataframe(df_b.style.format("{:.0f}"))
+    st.dataframe(df_b.style.format("${:,.0f}"))
